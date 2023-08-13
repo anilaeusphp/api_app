@@ -1,10 +1,16 @@
 module Api
   class ProductsController < ApplicationController
     before_action :set_product, only: %w[show update destroy]
-    before_action :authenticate_user!    
+    #before_action :authenticate_user!    
 
     def index
+      @cached_products = Rails.cache.read("products")
+      unless @cached_products.blank?
+        render json: {data: @cached_products, message: "Cached data has been served."}, status: :ok
+        return
+      end
       @products = Product.all
+      Rails.cache.write("products",@products, expire_in: 1.hour)
       unless(@products.blank?)
         @message = "Products listed."
         render :index, status: :ok

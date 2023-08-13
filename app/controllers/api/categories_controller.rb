@@ -1,10 +1,19 @@
 module Api
     class CategoriesController < ApplicationController
         before_action :set_category, only: %w[show update destroy]
-        before_action :authenticate_user!
+        #before_action :authenticate_user!
 
         def index
+
+            @cached_categories = Rails.cache.read("categories")
+            unless @cached_categories.blank?
+               render json: {data: @cached_categories, message: "Cached categories has been served"}, status: :ok
+               return
+            end
+
             @categories = Category.order(created_at: :desc)
+
+            Rails.cache.write("categories",@categories, expire_in: 1.hour)
             unless @categories.blank?
                 render json: @categories
             else

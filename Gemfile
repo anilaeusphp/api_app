@@ -7,7 +7,6 @@ gem "byebug"
 gem "devise"
 gem "devise_token_auth"
 gem "pundit"
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.7"
 
@@ -33,8 +32,8 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
-
+gem "redis", "~> 4.0"
+gem "redis-rails"
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
