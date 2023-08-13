@@ -1,7 +1,7 @@
 module Api
     class CategoriesController < ApplicationController
         before_action :set_category, only: %w[show update destroy]
-        skip_before_action :verify_authenticity_token
+        before_action :authenticate_user!
 
         def index
             @categories = Category.order(created_at: :desc)
@@ -18,6 +18,7 @@ module Api
 
         def create
             @category = Category.new(category_params)
+            authorize(@category)
             if @category.save
                 render json: @category
             else
@@ -26,6 +27,7 @@ module Api
         end
 
         def update
+            authorize(@category)
             if @category.update(category_params)
                 render json: @category
             else
@@ -34,6 +36,7 @@ module Api
         end
 
         def destroy
+            authorize(@category)
             if @category.destroy
                 render json: "Kategori başarıyla silindi"
             else

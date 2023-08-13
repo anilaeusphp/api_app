@@ -6,6 +6,7 @@ gem "byebug"
 
 gem "devise"
 gem "devise_token_auth"
+gem "pundit"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.7"

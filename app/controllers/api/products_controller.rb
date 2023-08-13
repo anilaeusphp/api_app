@@ -1,8 +1,7 @@
 module Api
   class ProductsController < ApplicationController
-    skip_before_action :verify_authenticity_token
     before_action :set_product, only: %w[show update destroy]
-    
+    before_action :authenticate_user!    
 
     def index
       @products = Product.all
@@ -22,6 +21,7 @@ module Api
 
     def create
       @product = Product.new(product_params)
+      authorize(@product)
       if @product.valid?
         @product.save
         @message = "Product has been created successfully"
@@ -33,12 +33,14 @@ module Api
     end
 
     def update
+      authorize(@product)
       if @product.update(product_params)
         render json: @product
       end
     end
 
     def destroy
+      authorize(@product)
       if @product.destroy
         @message = "Product has been deleted succesfully"
         render :destroy , status: :ok
